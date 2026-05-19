@@ -14,21 +14,22 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --green: #009C3B;
-  --green-dark: #7fa32a;
-  --navy: #263d51;
-  --navy-dark: #1a2c3a;
-  --navy-deeper: #111f2b;
-  --bg: #0f1e28;
-  --bg2: #142030;
-  --bg3: #1a2a3a;
-  --surface: #1e3347;
-  --surface2: #243d56;
-  --border: rgba(167,207,63,0.15);
-  --border2: rgba(0,156,59,0.35);
-  --text: #e8f0f5;
-  --text2: #8aa3b8;
-  --text3: #4d6e87;
+  --green: #009c3b;
+  --yellow: #FFDF00;
+  --green-dark: #007a2e;
+  --navy: #1a1a0a;
+  --navy-dark: #0f0f05;
+  --navy-deeper: #080804;
+  --bg: #0d1a0d;
+  --bg2: #111f11;
+  --bg3: #162416;
+  --surface: #1a2e1a;
+  --surface2: #203820;
+  --border: rgba(255,223,0,0.15);
+  --border2: rgba(255,223,0,0.35);
+  --text: #f5f5e8;
+  --text2: #b8c4a0;
+  --text3: #6a8060;
   --red: #FF4444;
   --radius: 10px;
   --radius-lg: 16px;
@@ -40,7 +41,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 /* ── AUTH SCREEN ── */
 #auth-screen {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(167,207,63,0.08) 0%, transparent 60%), var(--bg);
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,223,0,0.08) 0%, transparent 60%), var(--bg);
   padding: 2rem;
 }
 .auth-card {
@@ -55,7 +56,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .auth-tabs { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1.5rem; }
 .auth-tab { flex: 1; padding: 9px; font-size: 13px; font-weight: 500; background: none; border: none;
   color: var(--text2); cursor: pointer; transition: all 0.2s; font-family: inherit; }
-.auth-tab.active { background: var(--green); color: var(--navy-dark); font-weight: 700; }
+.auth-tab.active { background: var(--yellow); color: #0d1a0d; font-weight: 700; }
 .form-group { margin-bottom: 1rem; }
 .form-label { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; display: block; letter-spacing: 0.04em; }
 .form-field {
@@ -65,7 +66,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 }
 .form-field:focus { outline: none; border-color: var(--green); }
 .btn-auth {
-  width: 100%; background: var(--green); color: var(--navy-dark); border: none;
+  width: 100%; background: var(--yellow); color: #0d1a0d; border: none;
   border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700;
   font-family: inherit; cursor: pointer; transition: opacity 0.2s; margin-top: 0.5rem;
 }
@@ -78,7 +79,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 #app-screen { display: none; }
 nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(26,44,58,0.97); backdrop-filter: blur(12px);
+  background: rgba(13,26,13,0.97); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 1.5rem; height: 62px; gap: 1rem;
@@ -91,7 +92,7 @@ nav {
   color: var(--text3); padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
 }
 .nav-tab:hover { color: var(--text2); background: var(--surface); }
-.nav-tab.active { color: var(--green); background: rgba(167,207,63,0.12); }
+.nav-tab.active { color: var(--yellow); background: rgba(255,223,0,0.12); }
 .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .nav-user-name { font-size: 13px; color: var(--text2); white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
 .avatar {
@@ -115,16 +116,16 @@ nav {
 .hero { padding: 3rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
 .hero::before {
   content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(167,207,63,0.07) 0%, transparent 70%);
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,223,0,0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 .hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; color: var(--green); text-transform: uppercase; margin-bottom: 12px; }
 .hero h1 { font-size: clamp(44px,8vw,82px); line-height:0.92; font-weight:800; letter-spacing:-1px; margin-bottom:8px; }
-.hero h1 span { color: var(--green); }
+.hero h1 span { color: var(--yellow); }
 .hero-sub { font-size: 14px; color: var(--text2); margin-bottom: 2rem; }
 .hero-stats { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-bottom:2rem; }
 .hero-stat { text-align: center; }
-.hero-stat-num { font-size:30px; font-weight:700; color:var(--green); letter-spacing:-0.5px; }
+.hero-stat-num { font-size:30px; font-weight:700; color:var(--yellow); letter-spacing:-0.5px; }
 .hero-stat-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.1em; }
 
 /* ── SECTION ── */
@@ -133,7 +134,7 @@ nav {
 .section-title { font-size:18px; font-weight:700; color:var(--text); }
 .badge {
   font-size:11px; font-weight:500; padding:3px 10px; border-radius:20px;
-  background:rgba(167,207,63,0.1); color:var(--green); border:1px solid var(--border2);
+  background:rgba(255,223,0,0.1); color:var(--yellow); border:1px solid var(--border2);
 }
 
 /* ── RANKING ── */
@@ -149,7 +150,7 @@ nav {
 .ranking-item.top3 { border-color:rgba(205,127,50,0.35); }
 .rank-pos { font-size:20px; text-align:center; }
 .rank-name { font-weight:500; font-size:15px; }
-.rank-pts { font-size:26px; font-weight:700; color:var(--green); text-align:right; }
+.rank-pts { font-size:26px; font-weight:700; color:var(--yellow); text-align:right; }
 .rank-pts-label { font-size:10px; color:var(--text3); text-align:right; }
 .rank-trend { font-size:18px; }
 
@@ -161,7 +162,7 @@ nav {
   font-family:inherit;
 }
 .filter-btn:hover { border-color:var(--border2); color:var(--text); }
-.filter-btn.active { background:var(--green); border-color:var(--green); color:var(--navy-dark); font-weight:700; }
+.filter-btn.active { background:var(--yellow); border-color:var(--yellow); color:#0d1a0d; font-weight:700; }
 .jogos-list { display:flex; flex-direction:column; gap:10px; }
 .jogo-card {
   background:var(--surface); border:1px solid var(--border);
@@ -173,7 +174,7 @@ nav {
 .status-badge { font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.08em; }
 .status-badge.live { background:rgba(255,68,68,0.2); color:var(--red); border:1px solid rgba(255,68,68,0.4); animation:pulse 1.5s infinite; }
 .status-badge.finished { background:rgba(77,110,135,0.2); color:var(--text3); border:1px solid var(--border); }
-.status-badge.upcoming { background:rgba(167,207,63,0.1); color:var(--green); border:1px solid var(--border2); }
+.status-badge.upcoming { background:rgba(255,223,0,0.1); color:var(--yellow); border:1px solid var(--border2); }
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 .jogo-placar { display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:12px; }
 .jogo-time { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; }
@@ -290,7 +291,7 @@ nav {
   border-radius:var(--radius-lg); padding:16px 20px; margin-bottom:1.5rem;
   display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
 }
-.prize-pool-total { font-size:32px; font-weight:800; color:var(--green); letter-spacing:-1px; }
+.prize-pool-total { font-size:32px; font-weight:800; color:var(--yellow); letter-spacing:-1px; }
 .prize-pool-label { font-size:12px; color:var(--text3); text-transform:uppercase; letter-spacing:0.1em; }
 
 .bonus-pick-card {
@@ -378,7 +379,7 @@ nav {
 <!-- ══ APP SCREEN ═════════════════════════════════════════════ -->
 <div id="app-screen">
   <nav>
-    <div class="nav-logo" style="font-size:22px;font-weight:900;letter-spacing:-0.5px;color:var(--green)">⚽🍺 Ex-Amigos</div>
+    <div class="nav-logo" style="font-size:22px;font-weight:900;letter-spacing:-0.5px;color:var(--yellow)">⚽🍺 Ex-Amigos</div>
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showPage('standings',this)">Classificação</button>
       <button class="nav-tab" onclick="showPage('matches',this)">Jogos</button>
@@ -396,28 +397,28 @@ nav {
   <!-- STANDINGS -->
   <div class="page active" id="page-standings">
     <div class="hero">
-      <p class="hero-eyebrow">⚡ FIFA World Cup Sweepstakes</p>
-      <h1>THEGRINT<br><span>2026</span></h1>
-      <p class="hero-sub">USA · Mexico · Canada &mdash; Jun 11 to Jul 19, 2026</p>
+      <p class="hero-eyebrow">🍺⚽ Bolão dos Ex-Amigos</p>
+      <h1>COPA DO<br><span>MUNDO 2026</span></h1>
+      <p class="hero-sub">EUA · México · Canadá — 11 Jun a 19 Jul 2026</p>
       <div class="hero-stats">
         <div class="hero-stat"><div class="hero-stat-num" id="stat-participantees">—</div><div class="hero-stat-label">Participantes</div></div>
         <div class="hero-stat"><div class="hero-stat-num">104</div><div class="hero-stat-label">Jogos</div></div>
-        <div class="hero-stat"><div class="hero-stat-num" id="stat-picks">—</div><div class="hero-stat-label">Picks submitted</div></div>
+        <div class="hero-stat"><div class="hero-stat-num" id="stat-picks">—</div><div class="hero-stat-label">Palpites enviados</div></div>
       </div>
     </div>
 
     <div class="prize-pool-box" id="prize-pool-box" style="max-width:480px;margin:0 auto 2rem;display:none;">
       <div>
-        <div class="prize-pool-label">💰 Current Prize Pool</div>
-        <div class="prize-pool-total" id="prize-pool-total">$0</div>
+        <div class="prize-pool-label">💰 Premiação Atual</div>
+        <div class="prize-pool-total" id="prize-pool-total">R$0</div>
         <div style="font-size:12px;color:var(--text2);margin-top:2px">
           <span id="paid-count">0</span> pagos × R$20 de entrada
         </div>
       </div>
       <div style="font-size:13px;color:var(--text2);text-align:right;line-height:1.8">
-        🥇 1st: <strong style="color:var(--green)" id="prize-1st">$0</strong><br>
-        🥈 2nd: <strong style="color:#c0c0c0" id="prize-2nd">$0</strong><br>
-        🥉 3rd: <strong style="color:#cd7f32" id="prize-3rd">$0</strong>
+        🥇 1º: <strong style="color:var(--green)" id="prize-1st">$0</strong><br>
+        🥈 2º: <strong style="color:#c0c0c0" id="prize-2nd">$0</strong><br>
+        🥉 3º: <strong style="color:#cd7f32" id="prize-3rd">$0</strong>
       </div>
     </div>    <div class="section">
       <div class="section-header">
@@ -452,20 +453,20 @@ nav {
     <div class="section">
       <div class="section-header"><div class="section-title">Regras</div></div>
       <div class="regras-grid">
-        <div class="regra-card"><div class="regra-icon">🎯</div><div class="regra-titulo">Placar exato</div><div class="regra-desc">Nailed the full scoreline (e.g. 2–1)? Maximum pontos.</div><div class="regra-pts">10 <span>pts</span></div></div>
-        <div class="regra-card"><div class="regra-icon">✅</div><div class="regra-titulo">Resultado correto</div><div class="regra-desc">Got the winner or draw right, but score was off.</div><div class="regra-pts">5 <span>pts</span></div></div>
-        <div class="regra-card"><div class="regra-icon">❌</div><div class="regra-titulo">Errou tudo</div><div class="regra-desc">Result and scoreline both incorrect.</div><div class="regra-pts">0 <span>pts</span></div></div>
+        <div class="regra-card"><div class="regra-icon">🎯</div><div class="regra-titulo">Placar exato</div><div class="regra-desc">Acertou o placar exato (e.g. 2–1)? Maximum pontos.</div><div class="regra-pts">10 <span>pts</span></div></div>
+        <div class="regra-card"><div class="regra-icon">✅</div><div class="regra-titulo">Resultado correto</div><div class="regra-desc">Acertou o vencedor ou empate, mas o placar diferiu.</div><div class="regra-pts">5 <span>pts</span></div></div>
+        <div class="regra-card"><div class="regra-icon">❌</div><div class="regra-titulo">Errou tudo</div><div class="regra-desc">Resultado e placar incorretos.</div><div class="regra-pts">0 <span>pts</span></div></div>
       </div>
       <div style="margin-top:2rem"><div class="section-title" style="margin-bottom:1rem">Bônus Especiais</div>
-        <div class="bonus-item"><div class="bonus-emoji">🏆</div><div class="bonus-info"><div class="bonus-nome">Campeão do Torneio</div><div class="bonus-desc">Pick the winner before the tournament starts</div></div><div class="bonus-pts">+30</div></div>
-        <div class="bonus-item"><div class="bonus-emoji">🥇</div><div class="bonus-info"><div class="bonus-nome">Both Finalists</div><div class="bonus-desc">Correctly pick both teams reaching the grand final</div></div><div class="bonus-pts">+15</div></div>
-        <div class="bonus-item"><div class="bonus-emoji">👟</div><div class="bonus-info"><div class="bonus-nome">Artilheiro</div><div class="bonus-desc">Pick the player who scores the most goals</div></div><div class="bonus-pts">+20</div></div>
-        <div class="bonus-item"><div class="bonus-emoji">😮</div><div class="bonus-info"><div class="bonus-nome">Seleção Surpresa</div><div class="bonus-desc">The underdog that advances furthest from R16 on</div></div><div class="bonus-pts">+10</div></div>
-        <div class="bonus-item"><div class="bonus-emoji">📅</div><div class="bonus-info"><div class="bonus-nome">Picks On Time</div><div class="bonus-desc">All picks submitted before each round kicks off</div></div><div class="bonus-pts">+2/round</div></div>
+        <div class="bonus-item"><div class="bonus-emoji">🏆</div><div class="bonus-info"><div class="bonus-nome">Campeão do Torneio</div><div class="bonus-desc">Acerte o campeão antes do início do torneio</div></div><div class="bonus-pts">+30</div></div>
+        <div class="bonus-item"><div class="bonus-emoji">🥇</div><div class="bonus-info"><div class="bonus-nome">Both Finalists</div><div class="bonus-desc">Acerte as duas seleções que chegam à final</div></div><div class="bonus-pts">+15</div></div>
+        <div class="bonus-item"><div class="bonus-emoji">👟</div><div class="bonus-info"><div class="bonus-nome">Artilheiro</div><div class="bonus-desc">Acerte o maior goleador do torneio</div></div><div class="bonus-pts">+20</div></div>
+        <div class="bonus-item"><div class="bonus-emoji">😮</div><div class="bonus-info"><div class="bonus-nome">Seleção Surpresa</div><div class="bonus-desc">A zebra que avança mais longe a partir das oitavas</div></div><div class="bonus-pts">+10</div></div>
+        <div class="bonus-item"><div class="bonus-emoji">📅</div><div class="bonus-info"><div class="bonus-nome">Picks On Time</div><div class="bonus-desc">Todos os palpites enviados antes de cada rodada</div></div><div class="bonus-pts">+2/round</div></div>
       </div>
       <div style="margin-top:2rem;background:var(--surface);border-radius:var(--radius-lg);padding:20px;border:1px solid var(--border)">
         <div style="font-weight:700;margin-bottom:4px">💰 Distribuição dos Prêmios</div>
-        <div style="font-size:12px;color:var(--text3);margin-bottom:12px">Entry fee: <strong style="color:var(--green)">$20/person</strong> — Prize pool grows as participantees join</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px">Taxa de entrada: <strong style="color:var(--green)">R$20/pessoa</strong> — Premiação cresce conforme mais pessoas entram</div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <div style="display:flex;justify-content:space-between;font-size:14px;align-items:center">
             <span>🥇 1º lugar <span style="font-size:11px;color:var(--text3)">(60%)</span></span>
@@ -480,12 +481,12 @@ nav {
             <span style="color:#cd7f32;font-weight:700" id="rules-prize-3rd">—</span>
           </div>
         </div>
-        <div style="margin-top:12px;font-size:12px;color:var(--text3);border-top:1px solid var(--border);padding-top:10px">Tiebreaker: (1) most exato scores, (2) most correct resultados, (3) draw.</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--text3);border-top:1px solid var(--border);padding-top:10px">Desempate: (1) most exato scores, (2) most correct resultados, (3) sorteio.</div>
       </div>
       <div style="margin-top:1rem;background:rgba(167,207,63,0.06);border-radius:var(--radius-lg);padding:18px 20px;border:1px solid var(--border2)">
         <div style="font-size:13px;color:var(--text2);line-height:1.7">
-          <strong style="color:var(--green)">Prazo dos palpites:</strong> Picks lock automatically <strong>1 hour before</strong> each match kicks off.<br><br>
-          <strong style="color:var(--green)">Mata-mata:</strong> Scores based on 90-minute full-time result only. Extra time and penalties do not count.
+          <strong style="color:var(--green)">Prazo dos palpites:</strong> Os palpites travam automaticamente <strong>1 hora antes</strong> de cada jogo começar.<br><br>
+          <strong style="color:var(--green)">Mata-mata:</strong> Vale o placar do tempo normal (90 min). Prorrogação e pênaltis não contam.
         </div>
       </div>
     </div>
@@ -521,7 +522,7 @@ nav {
         <div class="admin-card"><h3>Total de palpites</h3><div class="admin-num" id="a-picks">—</div><div class="admin-sub">across all participantees</div></div>
       </div>
       <div class="update-form">
-        <h3>⚡ Update match score &amp; trigger pontos recalculation</h3>
+        <h3>⚡ Atualizar placar &amp; trigger pontos recalculation</h3>
         <div class="form-row">
           <select class="form-select" id="admin-match-select"><option value="">Selecione um jogo…</option></select>
           <input class="form-input-sm" type="number" min="0" max="20" id="admin-score-a" placeholder="0">
@@ -748,7 +749,7 @@ function updatePrizePool(paidCount) {
   const p1 = Math.round(total * 0.60);
   const p2 = Math.round(total * 0.25);
   const p3 = Math.round(total * 0.15);
-  const fmt = n => '$' + n;
+  const fmt = n => 'R$' + n;
   // Hero
   const box = document.getElementById('prize-pool-box');
   if (box) box.style.display = total > 0 ? 'flex' : 'none';
@@ -792,7 +793,7 @@ function renderLeaderboard(data) {
   document.getElementById('stat-picks').textContent = data.reduce((s,r) => s + parseInt(r.picks_submitted||0), 0);
   document.getElementById('standings-badge').textContent = data.length + ' participantees';
   const list = document.getElementById('ranking-list');
-  if (!data.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">No picks yet — be the first!</div></div>'; return; }
+  if (!data.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">Sem palpites — be the first!</div></div>'; return; }
   list.innerHTML = data.map((p, i) => {
     const medal = ['🥇','🥈','🥉'][i] || '';
     const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
