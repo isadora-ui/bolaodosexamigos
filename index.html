@@ -250,10 +250,10 @@ nav {
 .btn-outline-sm:hover { background:rgba(167,207,63,0.08); }
 .btn-danger-sm { background:none; border:1px solid rgba(255,68,68,0.4); color:var(--red); }
 .btn-danger-sm:hover { background:rgba(255,68,68,0.08); }
-.participantees-table { width:100%; border-collapse:collapse; }
-.participantees-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text3); padding:0 12px 10px; font-weight:500; }
-.participantees-table td { padding:10px 12px; font-size:14px; border-top:1px solid var(--border); }
-.participantees-table tr:hover td { background:rgba(167,207,63,0.03); }
+.participantes-table { width:100%; border-collapse:collapse; }
+.participantes-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text3); padding:0 12px 10px; font-weight:500; }
+.participantes-table td { padding:10px 12px; font-size:14px; border-top:1px solid var(--border); }
+.participantes-table tr:hover td { background:rgba(167,207,63,0.03); }
 .dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px; }
 .dot.ok { background:var(--green); }
 .dot.warn { background:#f0a500; }
@@ -401,7 +401,7 @@ nav {
       <h1>COPA DO<br><span>MUNDO 2026</span></h1>
       <p class="hero-sub">EUA · México · Canadá — 11 Jun a 19 Jul 2026</p>
       <div class="hero-stats">
-        <div class="hero-stat"><div class="hero-stat-num" id="stat-participantees">—</div><div class="hero-stat-label">Participantes</div></div>
+        <div class="hero-stat"><div class="hero-stat-num" id="stat-participantes">—</div><div class="hero-stat-label">Participantes</div></div>
         <div class="hero-stat"><div class="hero-stat-num">104</div><div class="hero-stat-label">Jogos</div></div>
         <div class="hero-stat"><div class="hero-stat-num" id="stat-picks">—</div><div class="hero-stat-label">Palpites enviados</div></div>
       </div>
@@ -517,12 +517,12 @@ nav {
         <span class="badge" style="background:rgba(255,68,68,0.1);color:var(--red);border-color:rgba(255,68,68,0.35)">Restrito</span>
       </div>
       <div class="admin-grid">
-        <div class="admin-card"><h3>Participantes</h3><div class="admin-num" id="a-participantees">—</div><div class="admin-sub" id="a-participantees-sub"></div></div>
+        <div class="admin-card"><h3>Participantes</h3><div class="admin-num" id="a-participantes">—</div><div class="admin-sub" id="a-participantes-sub"></div></div>
         <div class="admin-card"><h3>Jogos cadastrados</h3><div class="admin-num" id="a-matches">—</div><div class="admin-sub" id="a-matches-sub"></div></div>
-        <div class="admin-card"><h3>Total de palpites</h3><div class="admin-num" id="a-picks">—</div><div class="admin-sub">across all participantees</div></div>
+        <div class="admin-card"><h3>Total de palpites</h3><div class="admin-num" id="a-picks">—</div><div class="admin-sub">entre todos os participantes</div></div>
       </div>
       <div class="update-form">
-        <h3>⚡ Atualizar placar &amp; trigger pontos recalculation</h3>
+        <h3>⚡ Atualizar placar &amp; recalcular pontos</h3>
         <div class="form-row">
           <select class="form-select" id="admin-match-select"><option value="">Selecione um jogo…</option></select>
           <input class="form-input-sm" type="number" min="0" max="20" id="admin-score-a" placeholder="0">
@@ -539,9 +539,9 @@ nav {
             <button class="btn-sm btn-primary-sm" onclick="adminGrantAdmin()">Tornar admin</button>
           </div>
         </div>
-        <table class="participantees-table">
+        <table class="participantes-table">
           <thead><tr><th>Nome</th><th>Palpites</th><th>Pontos</th><th>Pagou?</th><th>Status</th></tr></thead>
-          <tbody id="admin-participantees-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">Carregando…</td></tr></tbody>
+          <tbody id="admin-participantes-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">Carregando…</td></tr></tbody>
         </table>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -698,7 +698,7 @@ async function loadAdminStats() {
     sb.from('matches').select('*', { count: 'exato', head: true }),
     sb.from('picks').select('*', { count: 'exato', head: true }),
   ]);
-  document.getElementById('a-participantees').textContent = pc ?? '—';
+  document.getElementById('a-participantes').textContent = pc ?? '—';
   document.getElementById('a-matches').textContent = mc ?? '—';
   document.getElementById('a-picks').textContent = pkc ?? '—';
   // Participants table
@@ -715,7 +715,7 @@ async function loadAdminStats() {
   const paidCount = (paidData||[]).filter(r => r.has_paid).length;
   updatePrizePool(paidCount);
 
-  const tbody = document.getElementById('admin-participantees-tbody');
+  const tbody = document.getElementById('admin-participantes-tbody');
   tbody.innerHTML = (profs||[]).map(p => {
     const picks = pcMap[p.id] || 0;
     const paid = paidMap[p.id] || false;
@@ -782,7 +782,7 @@ function subscribeRealtime() {
 
 // ── Render Leaderboard ─────────────────────────────────────────
 function renderLeaderboard(data) {
-  document.getElementById('stat-participantees').textContent = data.length;
+  document.getElementById('stat-participantes').textContent = data.length;
   // Atualizar prize pool se ainda não foi carregado pelo admin
   if (!document.getElementById('prize-pool-total').textContent.includes('$')) {
     sb.from('profiles').select('id, has_paid').then(({ data: pd }) => {
@@ -790,8 +790,8 @@ function renderLeaderboard(data) {
       updatePrizePool(paidCount);
     });
   }
-  document.getElementById('stat-picks').textContent = data.reduce((s,r) => s + parseInt(r.picks_submitted||0), 0);
-  document.getElementById('standings-badge').textContent = data.length + ' participantees';
+  document.getElementById('stat-picks').textContent = data.reduce((s,r) => s + parseInt(r.picks_submitted ?? r.picks_count ?? 0), 0);
+  document.getElementById('standings-badge').textContent = data.length + ' participantes';
   const list = document.getElementById('ranking-list');
   if (!data.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">Sem palpites ainda — seja o primeiro!</div></div>'; return; }
   list.innerHTML = data.map((p, i) => {
@@ -801,8 +801,8 @@ function renderLeaderboard(data) {
     return `<div class="ranking-item ${cls}"${isMe}>
       <div class="rank-pos">${medal || (i+1)}</div>
       <div><div class="rank-name">${escHtml(p.full_name)}${p.id===currentUser?.id?' <span style="font-size:11px;color:var(--green)">(você)</span>':''}</div>
-      <div style="font-size:11px;color:var(--text3)">${p.exato_scores} exato · ${p.correct_resultados} resultados</div></div>
-      <div><div class="rank-pts">${p.total_pontos}</div><div class="rank-pts-label">pontos</div></div>
+      <div style="font-size:11px;color:var(--text3)">${p.exato_scores ?? p.exact_scores ?? 0} exato · ${p.correct_resultados ?? p.correct_results ?? 0} resultados</div></div>
+      <div><div class="rank-pts">${p.total_pontos ?? p.total_points ?? 0}</div><div class="rank-pts-label">pontos</div></div>
       <div class="rank-trend">${i===0?'🔥':p.total_pontos>0?'↑':'→'}</div>
     </div>`;
   }).join('');
