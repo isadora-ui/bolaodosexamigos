@@ -595,16 +595,21 @@ async function signIn() {
   if (!email || !pass) { setAuthError('Preencha todos os campos.'); return; }
   const btn = document.getElementById('btn-signin');
   btn.disabled = true; btn.textContent = 'Entrando…';
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.disabled = false; btn.textContent = 'Entrar';
-  if (error) { setAuthError(error.message); return; }
-  // Fallback: se onAuthStateChange não disparar (ex: cache do SW), forçamos manualmente
-  if (data?.session?.user) {
-    currentUser = data.session.user;
-    await loadProfile();
-    showApp();
-    await loadAll();
-    subscribeRealtime();
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { setAuthError(error.message); btn.disabled = false; btn.textContent = 'Entrar'; return; }
+    // Forçar entrada diretamente sem depender do onAuthStateChange
+    if (data?.user) {
+      currentUser = data.user;
+      await loadProfile();
+      showApp();
+      btn.disabled = false; btn.textContent = 'Entrar';
+      await loadAll();
+      subscribeRealtime();
+    }
+  } catch(e) {
+    setAuthError('Erro ao conectar. Tente novamente.');
+    btn.disabled = false; btn.textContent = 'Entrar';
   }
 }
 
@@ -631,13 +636,14 @@ function setAuthMsg(msg) { document.getElementById('auth-msg').textContent = msg
 
 // ── Boot ───────────────────────────────────────────────────────
 sb.auth.onAuthStateChange(async (event, session) => {
-  if (session?.user) {
+  if (session?.user && !currentUser) {
+    // Só executa se ainda não estiver logado (evita duplicar com o signIn manual)
     currentUser = session.user;
     await loadProfile();
     showApp();
     await loadAll();
     subscribeRealtime();
-  } else {
+  } else if (!session?.user) {
     currentUser = null; currentProfile = null;
     showAuth();
   }
