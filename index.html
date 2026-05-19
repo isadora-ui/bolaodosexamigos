@@ -705,7 +705,7 @@ async function loadAdminStats() {
   const { data: profs } = await sb.from('profiles').select('id, full_name');
   const { data: pickCounts } = await sb.from('picks').select('user_id');
   const { data: pontos } = await sb.from('leaderboard').select('id, total_pontos');
-  const ptMap = {}; (pontos||[]).forEach(r => ptMap[r.id] = r.total_pontos);
+  const ptMap = {}; (pontos||[]).forEach(r => ptMap[r.id] = r.total_points);
   const pcMap = {}; (pickCounts||[]).forEach(r => { pcMap[r.user_id] = (pcMap[r.user_id]||0)+1; });
   // Buscar status de pagamento
   const { data: paidData } = await sb.from('profiles').select('id, has_paid');
@@ -790,7 +790,7 @@ function renderLeaderboard(data) {
       updatePrizePool(paidCount);
     });
   }
-  document.getElementById('stat-picks').textContent = data.reduce((s,r) => s + parseInt(r.picks_submitted ?? r.picks_count ?? 0), 0);
+  document.getElementById('stat-picks').textContent = data.reduce((s,r) => s + parseInt(r.picks_submitted ?? 0), 0);
   document.getElementById('standings-badge').textContent = data.length + ' participantes';
   const list = document.getElementById('ranking-list');
   if (!data.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">Sem palpites ainda — seja o primeiro!</div></div>'; return; }
@@ -801,8 +801,8 @@ function renderLeaderboard(data) {
     return `<div class="ranking-item ${cls}"${isMe}>
       <div class="rank-pos">${medal || (i+1)}</div>
       <div><div class="rank-name">${escHtml(p.full_name)}${p.id===currentUser?.id?' <span style="font-size:11px;color:var(--green)">(você)</span>':''}</div>
-      <div style="font-size:11px;color:var(--text3)">${p.exato_scores ?? p.exact_scores ?? 0} exato · ${p.correct_resultados ?? p.correct_results ?? 0} resultados</div></div>
-      <div><div class="rank-pts">${p.total_pontos ?? p.total_points ?? 0}</div><div class="rank-pts-label">pontos</div></div>
+      <div style="font-size:11px;color:var(--text3)">${p.exact_scores ?? 0} exato · ${p.correct_results ?? 0} resultados</div></div>
+      <div><div class="rank-pts">${p.total_points ?? 0}</div><div class="rank-pts-label">pontos</div></div>
       <div class="rank-trend">${i===0?'🔥':p.total_pontos>0?'↑':'→'}</div>
     </div>`;
   }).join('');
@@ -949,7 +949,7 @@ function exportCSV() {
   sb.from('leaderboard').select('*').then(({ data }) => {
     if (!data) return;
     const rows = [['Nome','Total de Pontos','Placares Exatos','Resultados Corretos','Palpites Enviados']];
-    data.forEach(r => rows.push([r.full_name, r.total_pontos, r.exato_scores, r.correct_resultados, r.picks_submitted]));
+    data.forEach(r => rows.push([r.full_name, r.total_points, r.exato_scores, r.correct_resultados, r.picks_submitted]));
     const csv = rows.map(r => r.join(',')).join('\n');
     const a = document.createElement('a');
     a.href = 'data:text/csv,' + encodeURIComponent(csv);
