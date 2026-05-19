@@ -1185,11 +1185,12 @@ function escHtml(s) {
 }
 </script>
 <script>
-// Desregistrar qualquer Service Worker existente
+// Limpar TUDO: service workers, caches e storage
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(regs => {
     regs.forEach(reg => reg.unregister());
   });
+  caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
 }
 </script></body>
 </html>
