@@ -412,7 +412,7 @@ nav {
         <div class="prize-pool-label">💰 Premiação Atual</div>
         <div class="prize-pool-total" id="prize-pool-total">R$0</div>
         <div style="font-size:12px;color:var(--text2);margin-top:2px">
-          <span id="paid-count">0</span> pagos × R$20 de entrada
+          <span id="paid-count">0</span> pago(s) × R$20 de entrada
         </div>
       </div>
       <div style="font-size:13px;color:var(--text2);text-align:right;line-height:1.8">
@@ -519,16 +519,16 @@ nav {
       <div class="admin-grid">
         <div class="admin-card"><h3>Participantes</h3><div class="admin-num" id="a-participantees">—</div><div class="admin-sub" id="a-participantees-sub"></div></div>
         <div class="admin-card"><h3>Jogos cadastrados</h3><div class="admin-num" id="a-matches">—</div><div class="admin-sub" id="a-matches-sub"></div></div>
-        <div class="admin-card"><h3>Total de palpites</h3><div class="admin-num" id="a-picks">—</div><div class="admin-sub">across all participantees</div></div>
+        <div class="admin-card"><h3>Total de palpites</h3><div class="admin-num" id="a-picks">—</div><div class="admin-sub">entre todos os participantes</div></div>
       </div>
       <div class="update-form">
-        <h3>⚡ Atualizar placar &amp; trigger pontos recalculation</h3>
+        <h3>⚡ Atualizar placar &amp; recalcular pontos</h3>
         <div class="form-row">
           <select class="form-select" id="admin-match-select"><option value="">Selecione um jogo…</option></select>
           <input class="form-input-sm" type="number" min="0" max="20" id="admin-score-a" placeholder="0">
           <span style="font-size:22px;color:var(--text3);font-weight:300">×</span>
           <input class="form-input-sm" type="number" min="0" max="20" id="admin-score-b" placeholder="0">
-          <button class="btn-sm btn-primary-sm" onclick="adminUpdateScore()">Salvar &amp; Calcular</button>
+          <button class="btn-sm btn-primary-sm" onclick="adminUpdateScore()">Salvar & Calcular</button>
         </div>
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-bottom:14px">
@@ -791,7 +791,7 @@ function renderLeaderboard(data) {
     });
   }
   document.getElementById('stat-picks').textContent = data.reduce((s,r) => s + parseInt(r.picks_submitted||0), 0);
-  document.getElementById('standings-badge').textContent = data.length + ' participantees';
+  document.getElementById('standings-badge').textContent = data.length + ' participante(s)';
   const list = document.getElementById('ranking-list');
   if (!data.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">Sem palpites — be the first!</div></div>'; return; }
   list.innerHTML = data.map((p, i) => {
@@ -927,10 +927,10 @@ async function adminUpdateScore() {
   if (!matchId || isNaN(sA) || isNaN(sB)) { toast('⚠️','Preencha todos os campos'); return; }
   const { error } = await sb.from('matches').update({ score_a: sA, score_b: sB, status: 'finished' }).eq('id', matchId);
   if (error) { toast('❌', error.message); return; }
-  // Trigger server-side pontos calculation
+  // Recalcular pontos no servidor
   const { error: fnErr } = await sb.rpc('calculate_picks_for_match', { p_match_id: matchId });
-  if (fnErr) { toast('⚠️', 'Score saved but pontos calc failed: ' + fnErr.message); return; }
-  toast('✅', 'Score saved and pontos recalculated!');
+  if (fnErr) { toast('⚠️', 'Placar salvo mas falha ao calcular pontos: ' + fnErr.message); return; }
+  toast('✅', 'Placar salvo e pontos recalculados!');
   await loadAll();
 }
 
