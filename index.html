@@ -694,9 +694,9 @@ async function loadMyPicks() {
 async function loadAdminStats() {
   if (!currentProfile?.is_admin) return;
   const [{ count: pc }, { count: mc }, { count: pkc }] = await Promise.all([
-    sb.from('profiles').select('*', { count: 'exato', head: true }),
-    sb.from('matches').select('*', { count: 'exato', head: true }),
-    sb.from('picks').select('*', { count: 'exato', head: true }),
+    sb.from('profiles').select('*', { count: 'exact', head: true }),
+    sb.from('matches').select('*', { count: 'exact', head: true }),
+    sb.from('picks').select('*', { count: 'exact', head: true }),
   ]);
   document.getElementById('a-participantes').textContent = pc ?? '—';
   document.getElementById('a-matches').textContent = mc ?? '—';
@@ -704,7 +704,7 @@ async function loadAdminStats() {
   // Participants table
   const { data: profs } = await sb.from('profiles').select('id, full_name');
   const { data: pickCounts } = await sb.from('picks').select('user_id');
-  const { data: pontos } = await sb.from('leaderboard').select('id, total_pontos');
+  const { data: pontos } = await sb.from('leaderboard').select('id, total_points');
   const ptMap = {}; (pontos||[]).forEach(r => ptMap[r.id] = r.total_points);
   const pcMap = {}; (pickCounts||[]).forEach(r => { pcMap[r.user_id] = (pcMap[r.user_id]||0)+1; });
   // Buscar status de pagamento
@@ -803,7 +803,7 @@ function renderLeaderboard(data) {
       <div><div class="rank-name">${escHtml(p.full_name)}${p.id===currentUser?.id?' <span style="font-size:11px;color:var(--green)">(você)</span>':''}</div>
       <div style="font-size:11px;color:var(--text3)">${p.exact_scores ?? 0} exato · ${p.correct_results ?? 0} resultados</div></div>
       <div><div class="rank-pts">${p.total_points ?? 0}</div><div class="rank-pts-label">pontos</div></div>
-      <div class="rank-trend">${i===0?'🔥':p.total_pontos>0?'↑':'→'}</div>
+      <div class="rank-trend">${i===0?'🔥':p.total_points>0?'↑':'→'}</div>
     </div>`;
   }).join('');
 }
@@ -949,7 +949,7 @@ function exportCSV() {
   sb.from('leaderboard').select('*').then(({ data }) => {
     if (!data) return;
     const rows = [['Nome','Total de Pontos','Placares Exatos','Resultados Corretos','Palpites Enviados']];
-    data.forEach(r => rows.push([r.full_name, r.total_points, r.exato_scores, r.correct_resultados, r.picks_submitted]));
+    data.forEach(r => rows.push([r.full_name, r.total_points, r.exato_scores, r.correct_results, r.picks_submitted]));
     const csv = rows.map(r => r.join(',')).join('\n');
     const a = document.createElement('a');
     a.href = 'data:text/csv,' + encodeURIComponent(csv);
