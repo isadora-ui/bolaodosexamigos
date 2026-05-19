@@ -589,28 +589,27 @@ function switchAuthTab(tab) {
   document.getElementById('auth-msg').textContent = '';
 }
 
-async function signIn() {
+function signIn() {
   const email = document.getElementById('si-email').value.trim();
   const pass  = document.getElementById('si-password').value;
   if (!email || !pass) { setAuthError('Preencha todos os campos.'); return; }
   const btn = document.getElementById('btn-signin');
   btn.disabled = true; btn.textContent = 'Entrando…';
-  try {
-    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  sb.auth.signInWithPassword({ email, password: pass }).then(({ data, error }) => {
     if (error) { setAuthError(error.message); btn.disabled = false; btn.textContent = 'Entrar'; return; }
-    // Forçar entrada diretamente sem depender do onAuthStateChange
     if (data?.user) {
       currentUser = data.user;
-      await loadProfile();
-      showApp();
       btn.disabled = false; btn.textContent = 'Entrar';
-      await loadAll();
-      subscribeRealtime();
+      loadProfile().then(() => {
+        showApp();
+        loadAll();
+        subscribeRealtime();
+      });
     }
-  } catch(e) {
+  }).catch(e => {
     setAuthError('Erro ao conectar. Tente novamente.');
     btn.disabled = false; btn.textContent = 'Entrar';
-  }
+  });
 }
 
 async function signUp() {
