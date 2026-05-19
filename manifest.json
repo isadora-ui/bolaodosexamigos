@@ -1,0 +1,17 @@
+{
+  "name": "Bolão dos Ex-Amigos",
+  "short_name": "Ex-Amigos",
+  "description": "Bolão da Copa do Mundo 2026",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1a0d",
+  "theme_color": "#009C3B",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%230d1a0d'/><text y='120' font-size='120' text-anchor='middle' x='96'>⚽</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
